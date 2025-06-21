@@ -1,48 +1,31 @@
 
 # 🃏 Cards Image Classification (Custom CNN)
 
-Proyek ini merupakan klasifikasi gambar kartu menggunakan **Convolutional Neural Network (CNN)** yang dibangun dari nol dengan Keras `Sequential` API. Dataset yang digunakan berasal dari Kaggle dan mencakup 53 kelas kartu yang berbeda.
+Proyek ini merupakan klasifikasi gambar hewan menggunakan **Convolutional Neural Network (CNN)** yang dibangun dari nol dengan Keras `Sequential` API. Dataset yang digunakan berasal dari Kaggle dan mencakup 3 kelas hewan yang berbeda.
 
 ## 📁 Dataset
 Dataset dapat diunduh dari:
-[Kaggle: Cards Image Dataset Classification](https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification)
+[Kaggle: Animal Image Dataset Classification](https://www.kaggle.com/datasets/borhanitrash/animal-image-classification-dataset)
 
-Struktur direktori dataset:
-
-```
-cards-image-datasetclassification/
-├── train/
-│   ├── class1/
-│   ├── class2/
-│   └── ...
-├── valid/
-│   ├── class1/
-│   ├── class2/
-│   └── ...
-├── test/
-│   ├── class1/
-│   └── ...
-├── cards.csv          # Metadata dan label kategori
-```
-
-Setiap gambar diresize ke ukuran **70x70 piksel**.
+Setiap gambar diresize ke ukuran **224x224 piksel**.
 
 ## 🧠 Model Arsitektur
 
 Model CNN yang digunakan dibangun secara berurutan sebagai berikut:
 
 ```python
-model = Sequential([
-    Conv2D(32, (3,3), activation='relu', input_shape=(70,70,3)),
-    MaxPooling2D((2,2)),
-    Conv2D(32, (3,3), activation='relu'),
-    MaxPooling2D((2,2)),
-    Conv2D(32, (3,3), activation='relu'),
-    MaxPooling2D((2,2)),
+model = keras.models.Sequential([
+    keras.layers.Rescaling(1./255, input_shape=[224, 224, 3]),  # Normalization
+    Conv2D(32, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D((2, 2)),
+    Conv2D(64, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D((2, 2)),
+    Conv2D(128, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D((2, 2)),
     Flatten(),
     Dense(128, activation='relu'),
-    Dense(64, activation='relu'),
-    Dense(53, activation='softmax')
+    Dropout(0.5),
+    Dense(len(classes), activation='softmax')  # Ensure the output size matches the number of classes
 ])
 ```
 
@@ -63,7 +46,7 @@ pip install -r requirements.txt
 2. Jalankan notebook:
 
 ```bash
-jupyter notebook Cards_Image_Classification.ipynb
+jupyter notebook Animal_Image_Classification.ipynb
 ```
 
 3. Pastikan dataset sudah diunduh dan disimpan dalam direktori yang sesuai seperti struktur di atas.
@@ -92,5 +75,5 @@ Model berhasil dilatih untuk mengklasifikasikan 53 kelas kartu dengan akurasi va
 - Dapat dikembangkan dengan visualisasi confusion matrix, Grad-CAM, dan evaluasi lainnya.
 
 ## 🧑‍💻 Kontributor
-- Ryan Hidayat  
+- Ryan Rachmad Hidayat  
 - Dibuat dengan ❤️ menggunakan TensorFlow dan CNN
