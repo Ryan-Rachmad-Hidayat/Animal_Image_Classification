@@ -1,5 +1,5 @@
 
-# 🃏 Cards Image Classification (Custom CNN)
+# Animal Image Classification (Custom CNN)
 
 Proyek ini merupakan klasifikasi gambar hewan menggunakan **Convolutional Neural Network (CNN)** yang dibangun dari nol dengan Keras `Sequential` API. Dataset yang digunakan berasal dari Kaggle dan mencakup 3 kelas hewan yang berbeda.
 
