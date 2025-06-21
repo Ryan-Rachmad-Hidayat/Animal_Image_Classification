@@ -1,10 +1,13 @@
 
-# 🃏 Cards Image Classification
+# 🃏 Cards Image Classification (Custom CNN)
 
-Proyek ini merupakan implementasi deep learning untuk klasifikasi gambar kartu menggunakan model **EfficientNetB3** dengan pendekatan transfer learning. Dataset yang digunakan mencakup berbagai jenis gambar kartu yang dikelompokkan dalam folder per kelas.
+Proyek ini merupakan klasifikasi gambar kartu menggunakan **Convolutional Neural Network (CNN)** yang dibangun dari nol dengan Keras `Sequential` API. Dataset yang digunakan berasal dari Kaggle dan mencakup 53 kelas kartu yang berbeda.
 
 ## 📁 Dataset
-Dataset diklasifikasikan dalam struktur direktori:
+Dataset dapat diunduh dari:
+[Kaggle: Cards Image Dataset Classification](https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification)
+
+Struktur direktori dataset:
 
 ```
 cards-image-datasetclassification/
@@ -22,18 +25,32 @@ cards-image-datasetclassification/
 ├── cards.csv          # Metadata dan label kategori
 ```
 
-Setiap gambar akan diproses ulang ke ukuran **224x224 piksel** agar sesuai dengan input dari model **EfficientNetB3**.
+Setiap gambar diresize ke ukuran **70x70 piksel**.
 
 ## 🧠 Model Arsitektur
 
-Model utama menggunakan arsitektur berikut:
+Model CNN yang digunakan dibangun secara berurutan sebagai berikut:
 
-- **EfficientNetB3** pretrained dari ImageNet, tanpa top layer
-- **Global pooling**, diikuti oleh:
-  - BatchNormalization
-  - Dense(1024, ReLU) + Dropout(0.3)
-  - Dense(128, ReLU) + Dropout(0.45)
-  - Dense(kelas, Softmax)
+```python
+model = Sequential([
+    Conv2D(32, (3,3), activation='relu', input_shape=(70,70,3)),
+    MaxPooling2D((2,2)),
+    Conv2D(32, (3,3), activation='relu'),
+    MaxPooling2D((2,2)),
+    Conv2D(32, (3,3), activation='relu'),
+    MaxPooling2D((2,2)),
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dense(64, activation='relu'),
+    Dense(53, activation='softmax')
+])
+```
+
+Model dikompilasi dengan:
+
+```python
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+```
 
 ## 🚀 Cara Menjalankan
 
@@ -49,7 +66,7 @@ pip install -r requirements.txt
 jupyter notebook Cards_Image_Classification.ipynb
 ```
 
-Atau bisa juga menggunakan Kaggle Notebook, Google Colab, atau environment lain berbasis Jupyter.
+3. Pastikan dataset sudah diunduh dan disimpan dalam direktori yang sesuai seperti struktur di atas.
 
 ## 📦 Dependensi
 
@@ -66,14 +83,14 @@ scikit-learn>=1.0.2
 
 ## 📈 Hasil
 
-Model dilatih selama 10 epoch dengan akurasi validasi yang meningkat signifikan. Evaluasi dilakukan menggunakan akurasi dan prediksi label untuk melihat kinerja klasifikasi multi-kelas.
+Model berhasil dilatih untuk mengklasifikasikan 53 kelas kartu dengan akurasi validasi yang meningkat secara bertahap selama pelatihan.
 
 ## 📌 Catatan
 
-- Gunakan GPU untuk mempercepat proses training (disarankan runtime dengan GPU di Colab/Kaggle).
-- Model dapat disimpan ke `.h5` untuk keperluan deploy.
-- Notebook ini dapat dikembangkan lebih lanjut dengan integrasi GradCAM, confusion matrix, atau deploy ke Streamlit/Gradio.
+- Dataset memiliki jumlah kelas besar (53 kelas), sehingga pastikan cukup epoch dan augmentasi dilakukan.
+- Gunakan GPU untuk mempercepat proses training.
+- Dapat dikembangkan dengan visualisasi confusion matrix, Grad-CAM, dan evaluasi lainnya.
 
 ## 🧑‍💻 Kontributor
 - Ryan Hidayat  
-- Dibuat dengan ❤️ menggunakan TensorFlow dan EfficientNet
+- Dibuat dengan ❤️ menggunakan TensorFlow dan CNN
