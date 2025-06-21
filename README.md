@@ -92,5 +92,5 @@ Model berhasil dilatih untuk mengklasifikasikan 53 kelas kartu dengan akurasi va
 - Dapat dikembangkan dengan visualisasi confusion matrix, Grad-CAM, dan evaluasi lainnya.
 
 ## 🧑‍💻 Kontributor
-- Ryan Hidayat  
+- Ryan Rachmad Hidayat  
 - Dibuat dengan ❤️ menggunakan TensorFlow dan CNN
